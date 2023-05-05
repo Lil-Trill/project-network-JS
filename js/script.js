@@ -28,7 +28,7 @@ function outputContent(obj){
   body.classList.add("user_id");
   blockConten.append(body);
   let span = document.createElement('span');
-  span.classList.add('tooltip');
+  span.classList.add('model_window');
   span.dataset.tooltip = "какой-то контент";
   span.textContent = "подробнее";
   blockConten.append(span);
