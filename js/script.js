@@ -135,6 +135,7 @@ async function renderSortAuthors(){
         outputContent(jsonData[i]);
       }
     }
+    getButtons();
   }
   
 
