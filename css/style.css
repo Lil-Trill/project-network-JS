@@ -1,2 +1,12 @@
+.model_window {
+    display: none;
+    width: 700px;
+    max-height: 300px;
+    border: black solid 1px;
+}
 
+.model-open {
+    display: flex;
+    justify-content: center;
+}
 
