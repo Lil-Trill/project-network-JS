@@ -3,16 +3,25 @@ const urlArticle = 'https://jsonplaceholder.typicode.com/posts';
 const urlComments = 'https://jsonplaceholder.typicode.com/comments';
 const modelWindow = document.querySelector(".model_window");
 const btnCloseModelWindow = document.querySelector(".btn_close");
+const urlAuthors = "https://jsonplaceholder.typicode.com/users";
+const authorsContainer = document.querySelector('.authors'); 
+let blockComments = document.createElement('div');
+blockComments.classList.add('comments');
+let blockContentModelWindow = document.createElement('div');
+blockContentModelWindow.classList.add('content');
 let objs;
 let btns;
 
 btnCloseModelWindow.addEventListener('click',()=>{
-  modelWindow.innerHTML = "<button class='btn_close'>Закрыть модальное окно</button> ";
-  modelWindow.classList.toggle("model-open");
+ // modelWindow.innerHTML = "<button class='btn_close'>Закрыть модальное окно</button> ";
+  blockComments.innerHTML = " ";
+  blockContentModelWindow.innerHTML = " ";
+ modelWindow.classList.toggle("model-open");
   console.log("модальное окно закрыто");
 });
 
 async function getData(){
+  block.innerHTML = " ";
   const data = await fetch(urlArticle);
   objs = await data.json();
   for(let i = 0; i < objs.length; i++){
@@ -21,6 +30,30 @@ async function getData(){
   getButtons();
 }
 
+async function getAuthors(){
+  const dataAuthors = await (await fetch(urlAuthors)).json();
+  for(let i = 0; i < dataAuthors.length; i++){
+    let paragraph = document.createElement('p');
+    let input = document.createElement('input');
+    input.classList.add("input-authors")
+    input.name = "authors";
+    input.type = radio;
+    input.setAttribute('type','radio');
+    input.value = dataAuthors[i].id;
+    paragraph.textContent = dataAuthors[i].username;
+    paragraph.append(input);
+    authorsContainer.append(paragraph);
+  }
+}
+
+authorsContainer.addEventListener('click',(event)=>{
+  let obj = event.target;
+  console.log(obj);
+  if(obj.classList.contains('input-authors')){
+    console.log(obj.value);
+    renderSortAuthors(obj.value);
+  }
+})
 
 function getButtons(){
   btns = document.querySelectorAll(".btn_model_window");
@@ -28,10 +61,12 @@ function getButtons(){
     btn.addEventListener('click',(event)=>{
       let parent = btn.parentNode;
       showModelWindow(btn,parent);
-    })
+    });
+    
   });
 }
 
+getAuthors();
 
 async function showModelWindow(btn,parent){
   modelWindow.classList.add("model-open");
@@ -70,21 +105,20 @@ function outputContent(obj){
 
 
 function modelWindowContent(parent){
-  let blockConten = document.createElement("div");
-  blockConten.classList.add("block_content_model");
+  blockContentModelWindow.innerHTML = " ";
   let title = document.createElement('p');
   title.classList.add("title_model");
   title.textContent = parent.querySelector('.title').textContent;
   let body = document.createElement('p');
   body.classList.add("body_model");
   body.textContent = parent.querySelector('.body').textContent;
-  blockConten.append(title);
-  blockConten.append(body);
-  modelWindow.prepend(blockConten);
+  blockContentModelWindow.append(title);
+  blockContentModelWindow.append(body);
+  modelWindow.prepend(blockContentModelWindow);
 }
 
 function modelWindowComments(obj){
-  let blockComments = document.createElement('div');
+  blockComments.innerHTML = " ";
   let id = document.createElement('p');
   id.classList.add('id_comment');
   id.textContent = obj.id;
@@ -101,32 +135,17 @@ function modelWindowComments(obj){
 }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>соритровка по авторам<<<<<<<<<<<<<<<<<<<<<<
-const btnSort = document.querySelector(".btn-sort");
 const blockContent = document.querySelector(".block_contants");
-let radio = document.getElementsByName('author');
+let radio = document.getElementsByName('authors');
 const btnShowAll = document.querySelector(".btn_show_authors");
 
 
 btnShowAll.addEventListener('click', getData);
-function testRadio(){
-    console.log(this.value);
-}
 
-btnSort.addEventListener('click',()=>{
-    blockContent.innerHTML = " ";
-  renderSortAuthors();
-});
 
-async function renderSortAuthors(){
-  let id;
-  let flag = false;
-  for(let i = 0; i < radio.length; i++){
-    if(radio[i].checked){
-      id = radio[i].value;
-      break;
-    }
-    } 
-    console.log(id);
+
+async function renderSortAuthors(id){
+    block.innerHTML = " ";
     const data = await fetch(urlArticle);
     const jsonData = await data.json();
     console.log(jsonData);
@@ -137,7 +156,3 @@ async function renderSortAuthors(){
     }
     getButtons();
   }
-  
-
-
-
