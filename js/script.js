@@ -13,9 +13,6 @@ let objs;
 let btns;
 
 btnCloseModelWindow.addEventListener('click',()=>{
- // modelWindow.innerHTML = "<button class='btn_close'>Закрыть модальное окно</button> ";
-  blockComments.innerHTML = " ";
-  blockContentModelWindow.innerHTML = " ";
  modelWindow.classList.toggle("model-open");
   console.log("модальное окно закрыто");
 });
