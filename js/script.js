@@ -62,17 +62,20 @@ function getButtons(){
     
   });
 }
-
+//рас рас проверка коментариев работает? намана
+//работает
 getAuthors();
 
 async function showModelWindow(btn,parent){
   modelWindow.classList.add("model-open");
   modelWindowContent(parent);
+  blockComments.innerHTML = " ";
   const data = await fetch(urlComments);
   const jsonData = await data.json();
   for(let i = 0; i < jsonData.length; i++){
-    if(jsonData[i].id == btn.dataset.authorId) {
+    if(jsonData[i].postId == btn.dataset.postId) {
       modelWindowComments(jsonData[i]);
+      console.log("чота сработало");
     }
   }
 }
@@ -94,13 +97,13 @@ function outputContent(obj){
   blockConten.append(body);
   let btn = document.createElement('button');
   btn.classList.add('btn_model_window');
-  btn.dataset.authorId = obj.id;
+  btn.dataset.postId = obj.id;
   btn.textContent = "подробнее";
   blockConten.append(btn);
   block.append(blockConten);
 }
 
-
+getData();
 function modelWindowContent(parent){
   blockContentModelWindow.innerHTML = " ";
   let title = document.createElement('p');
@@ -115,7 +118,6 @@ function modelWindowContent(parent){
 }
 
 function modelWindowComments(obj){
-  blockComments.innerHTML = " ";
   let id = document.createElement('p');
   id.classList.add('id_comment');
   id.textContent = obj.id;
